@@ -1,0 +1,32 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 01-may-2020, 11:48:02
+    Author     : claum
+*/
+body{
+    
+}
+
+.secondary .logo a{
+    height: 45px;
+}
+.secondary .logo a img{
+    height: 100%;
+    width: 100%;
+}
+
+.layout-header{
+    height: 89vh;
+    display: flex;
+    justify-content: space-between;
+}
+.layout-header .column-bg{
+    background-image: url("../img/people_search_red.png");
+    background-size: cover;
+    height: 100%;
+    width: 40%;
+}
