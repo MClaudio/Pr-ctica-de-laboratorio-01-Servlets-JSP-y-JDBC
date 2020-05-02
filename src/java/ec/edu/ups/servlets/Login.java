@@ -48,7 +48,10 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String mail = request.getParameter("mail");
+        String pass = request.getParameter("pass");
         
+        System.out.println(" mail: "+mail+" pass: "+pass);
     }
 
     /**

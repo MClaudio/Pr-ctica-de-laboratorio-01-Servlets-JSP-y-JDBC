@@ -30,3 +30,8 @@ body{
     height: 100%;
     width: 40%;
 }
+
+.placeholder.segment{
+    width: 70%;
+    margin: 50px auto;
+}
