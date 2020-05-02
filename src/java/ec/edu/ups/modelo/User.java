@@ -13,26 +13,27 @@ import java.util.Objects;
  *
  * @author claum
  */
-public class Persona implements Serializable{
+public class User implements Serializable{
     private static final long serialVersionUID = 1L;
     private String cedula;
     private String nombre;
     private String apellido;
     private String correo;
     private String pass;
-    private List<Telefono> telefonos;
+    private int activo;
+    private List<Phone> telefonos;
     
-    public Persona(){
+    public User(){
         
     }
 
-    public Persona(String cedula, String nombre, String apellido, String correo, String pass, List<Telefono> telefonos) {
+    public User(String cedula, String nombre, String apellido, String correo, String pass, int activo) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
         this.pass = pass;
-        this.telefonos = telefonos;
+        this.activo = activo;
     }
 
     public String getCedula() {
@@ -75,11 +76,19 @@ public class Persona implements Serializable{
         this.pass = pass;
     }
 
-    public List<Telefono> getTelefonos() {
+    public int getActivo() {
+        return activo;
+    }
+
+    public void setActivo(int activo) {
+        this.activo = activo;
+    }
+    
+    public List<Phone> getTelefonos() {
         return telefonos;
     }
 
-    public void setTelefonos(List<Telefono> telefonos) {
+    public void setTelefonos(List<Phone> telefonos) {
         this.telefonos = telefonos;
     }
 
@@ -101,7 +110,7 @@ public class Persona implements Serializable{
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Persona other = (Persona) obj;
+        final User other = (User) obj;
         if (!Objects.equals(this.correo, other.correo)) {
             return false;
         }

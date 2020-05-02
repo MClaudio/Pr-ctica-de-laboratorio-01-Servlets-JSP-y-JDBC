@@ -4,22 +4,14 @@
  * and open the template in the editor.
  */
 package ec.edu.ups.dao;
+
+import ec.edu.ups.modelo.Phone;
 import java.util.List;
+
 /**
  *
  * @author claum
  */
-public interface GenericDAO<T, ID> {
-
-    public void createTable();
-
-    public void create(T entity);
-
-    public T findById(ID id);
-
-    public void update(T entity);
-
-    public void delete(T entity);
-
-    public List<T> find();
+public interface PhoneDAO extends GenericDAO<Phone, Integer>{
+    public abstract List<Phone> findByUserId(String cedula);
 }

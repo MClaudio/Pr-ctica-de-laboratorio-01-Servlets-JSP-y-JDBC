@@ -11,18 +11,18 @@ import java.io.Serializable;
  *
  * @author claum
  */
-public class Telefono implements Serializable{
+public class Phone implements Serializable{
     private static final long serialVersionUID = 1L;
     private int id;
     private String numero;
     private String tipo;
     private String operadora;
     
-    public Telefono (){
+    public Phone (){
         
     }
 
-    public Telefono(int id, String tipo, String operadora) {
+    public Phone(int id, String tipo, String operadora) {
         this.id = id;
         this.tipo = tipo;
         this.operadora = operadora;
