@@ -5,6 +5,9 @@
  */
 package ec.edu.ups.dao;
 
+import ec.edu.ups.mysql.jdbc.JDBCPhoneDAO;
+import ec.edu.ups.mysql.jdbc.JDBCUserDAO;
+
 /**
  *
  * @author claum
@@ -13,16 +16,18 @@ public class JDBCDAOFactory extends DAOFactory{
 
     @Override
     public void createTables() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.getUserDAO().createTable();
+        this.getPhoneDAO().createTable();
     }
 
     @Override
-    public UserDAO getPersonaDAO() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public UserDAO getUserDAO() {
+        return new JDBCUserDAO();
     }
 
-    public PhoneDAO getTelefonoDAO() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Override
+    public PhoneDAO getPhoneDAO() {
+        return new JDBCPhoneDAO();
     }
     
 }

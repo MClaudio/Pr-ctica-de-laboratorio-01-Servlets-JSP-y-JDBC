@@ -16,7 +16,7 @@ public abstract class DAOFactory {
     
     public abstract void createTables();
     
-    public abstract UserDAO getPersonaDAO();
+    public abstract UserDAO getUserDAO();
     
-    public abstract PhoneDAO getTelefonoDAO();
+    public abstract PhoneDAO getPhoneDAO();
 }

@@ -13,13 +13,13 @@ public interface GenericDAO<T, ID> {
 
     public void createTable();
 
-    public void create(T entity);
+    public boolean create(T entity);
 
     public T findById(ID id);
 
-    public void update(T entity);
+    public boolean update(T entity);
 
-    public void delete(T entity);
+    public boolean delete(T entity);
 
     public List<T> find();
 }

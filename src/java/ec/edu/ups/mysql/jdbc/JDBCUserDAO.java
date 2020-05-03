@@ -22,32 +22,30 @@ public class JDBCUserDAO extends JDBCGenericDAO<User, String> implements UserDAO
 
     @Override
     public void createTable() {
-        conexionUno.update("CREATE DATABASE IF NOT EXISTS db_bookcontact");
-        conexionUno.update("CREATE TABLE IF NOT EXISTS usuarios ("
-                + "	cedula VARCHAR(10) NOT NULL,"
-                + "	nombre VARCHAR(50),"
-                + "	apellido VARCHAR(50),"
-                + "	correo VARCHAR(100),"
-                + "	pass VARCHAR(255),"
-                + "	activo INT,"
-                + "	PRIMARY KEY (cedula)"
+        conexionUno.update("CREATE TABLE IF NOT EXISTS usuario ("
+                + "	usu_cedula VARCHAR(10) NOT NULL,"
+                + "	usu_nombre VARCHAR(50),"
+                + "	usu_apellido VARCHAR(50),"
+                + "	usu_correo VARCHAR(100),"
+                + "	usu_pass VARCHAR(255),"
+                + "	usu_activo INT,"
+                + "	PRIMARY KEY (usu_cedula)"
                 + ");");
-        DAOFactory.getDAOFactory().getTelefonoDAO().createTable();
     }
 
     @Override
-    public void create(User user) {
-        conexionUno.update("INSERT INTO usuarios VALUES ('" + user.getCedula() + "', '" + user.getNombre() + "', '" + user.getApellido() + "', '" + user.getCorreo() + "', '" + user.getPass() + "'," + user.getActivo() + ");");
+    public boolean create(User user) {
+        return conexionUno.update("INSERT INTO usuario VALUES ('" + user.getCedula() + "', '" + user.getNombre() + "', '" + user.getApellido() + "', '" + user.getCorreo() + "', '" + user.getPass() + "'," + user.getActivo() + ");");
     }
 
     @Override
     public User findById(String cedula) {
         User user = null;
-        ResultSet rs = conexionUno.query("SELECT * FROM usuarios WHERE cedula = '" + cedula + "';");
+        ResultSet rs = conexionUno.query("SELECT * FROM usuario WHERE usu_cedula = '" + cedula + "';");
         try {
             if (rs != null && rs.next()) {
-                user = new User(rs.getString("cedula"), rs.getString("nombre"), rs.getNString("apellido"), rs.getNString("correo"), rs.getNString("pass"), rs.getInt("activo"));
-                List<Phone> phones = DAOFactory.getDAOFactory().getTelefonoDAO().findByUserId(user.getCedula());
+                user = new User(rs.getString("usu_cedula"), rs.getString("usu_nombre"), rs.getNString("usu_apellido"), rs.getNString("usu_correo"), rs.getNString("usu_pass "), rs.getInt("usu_activo"));
+                List<Phone> phones = DAOFactory.getDAOFactory().getPhoneDAO().findByUserId(user.getCedula());
                 user.setTelefonos(phones);
             }
         } catch (SQLException e) {
@@ -57,30 +55,30 @@ public class JDBCUserDAO extends JDBCGenericDAO<User, String> implements UserDAO
     }
 
     @Override
-    public void update(User user) {
-        conexionUno.update("UPDATE usuarios SET "
-                + "	nombre = '" + user.getNombre() + "',"
-                + "	apellido = '" + user.getApellido() + "',"
-                + "	pass = '" + user.getPass() + "'"
-                + "	WHERE cedula = '" + user.getCedula() + "';");
+    public boolean update(User user) {
+        return conexionUno.update("UPDATE usuario SET "
+                + "	usu_nombre = '" + user.getNombre() + "',"
+                + "	usu_apellido = '" + user.getApellido() + "',"
+                + "	usu_pass  = '" + user.getPass() + "'"
+                + "	WHERE usu_cedula = '" + user.getCedula() + "';");
     }
 
     @Override
-    public void delete(User user) {
-        conexionUno.update("UPDATE usuarios SET "
-                + "	activo = " + user.getActivo()
-                + "	WHERE cedula = '" + user.getCedula() + "';");
+    public boolean delete(User user) {
+      return conexionUno.update("UPDATE usuario SET "
+                + "	usu_activo = " + user.getActivo()
+                + "	WHERE usu_cedula = '" + user.getCedula() + "';");
     }
 
     @Override
     public List<User> find() {
         List<User> users = new ArrayList<>();
 
-        ResultSet rs = conexionUno.query("SELECT * FROM usuarios;");
+        ResultSet rs = conexionUno.query("SELECT * FROM usuario;");
         try {
             while (rs.next()) {
-                User user = new User(rs.getString("cedula"), rs.getString("nombre"), rs.getNString("apellido"), rs.getNString("correo"), rs.getNString("pass"), rs.getInt("activo"));
-                List<Phone> phones = DAOFactory.getDAOFactory().getTelefonoDAO().findByUserId(user.getCedula());
+                User user = new User(rs.getString("usu_cedula"), rs.getString("usu_nombre"), rs.getNString("usu_apellido"), rs.getNString("usu_correo"), rs.getNString("usu_pass "), rs.getInt("usu_activo"));
+                List<Phone> phones = DAOFactory.getDAOFactory().getPhoneDAO().findByUserId(user.getCedula());
                 user.setTelefonos(phones);
                 users.add(user);
             }
@@ -89,5 +87,4 @@ public class JDBCUserDAO extends JDBCGenericDAO<User, String> implements UserDAO
         }
         return users;
     }
-
 }
