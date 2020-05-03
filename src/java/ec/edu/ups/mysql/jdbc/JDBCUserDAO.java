@@ -11,7 +11,6 @@ import ec.edu.ups.modelo.Phone;
 import ec.edu.ups.modelo.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +32,7 @@ public class JDBCUserDAO extends JDBCGenericDAO<User, String> implements UserDAO
                 + "	activo INT,"
                 + "	PRIMARY KEY (cedula)"
                 + ");");
+        DAOFactory.getDAOFactory().getTelefonoDAO().createTable();
     }
 
     @Override
@@ -53,7 +53,6 @@ public class JDBCUserDAO extends JDBCGenericDAO<User, String> implements UserDAO
         } catch (SQLException e) {
             System.out.println(">>>WARNING (JDBCUserDAO:findById): " + e.getMessage());
         }
-
         return user;
     }
 
@@ -84,12 +83,10 @@ public class JDBCUserDAO extends JDBCGenericDAO<User, String> implements UserDAO
                 List<Phone> phones = DAOFactory.getDAOFactory().getTelefonoDAO().findByUserId(user.getCedula());
                 user.setTelefonos(phones);
                 users.add(user);
-
             }
         } catch (SQLException e) {
             System.out.println(">>>WARNING (JDBCUserDAO:find): " + e.getMessage());
         }
-
         return users;
     }
 

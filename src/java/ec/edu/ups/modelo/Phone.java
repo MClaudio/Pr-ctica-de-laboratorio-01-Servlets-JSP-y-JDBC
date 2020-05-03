@@ -17,6 +17,7 @@ public class Phone implements Serializable{
     private String numero;
     private String tipo;
     private String operadora;
+    private User user;
     
     public Phone (){
         
@@ -60,6 +61,14 @@ public class Phone implements Serializable{
         this.operadora = operadora;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
     @Override
     public String toString() {
         return "Telefono{" + "id=" + id + ", numero=" + numero + ", tipo=" + tipo + ", operadora=" + operadora + '}';
