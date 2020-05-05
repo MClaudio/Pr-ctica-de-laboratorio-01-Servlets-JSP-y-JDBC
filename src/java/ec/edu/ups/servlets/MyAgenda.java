@@ -40,7 +40,7 @@ public class MyAgenda extends HttpServlet {
         String sesion = request.getParameter("logout");
         if (sesion != null) {
             if (sesion.equals("true")) {
-                System.out.println("Sesion cerrada de id " + request.getSession().getAttribute("sesionID"));
+                //System.out.println("Sesion cerrada de id " + request.getSession().getAttribute("sesionID"));
                 request.getSession().invalidate();
                 response.sendRedirect("/Practica-de-laboratorio-01");
 

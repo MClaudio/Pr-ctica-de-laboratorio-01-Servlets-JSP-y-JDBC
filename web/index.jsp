@@ -45,7 +45,10 @@
         </div>
         <div class="layout-header">
             <div class="column-description">
-                <h1><span>BookContact</span> </h1>
+                <h1><span>BookContact</span></h1>
+                <p>Somos tu compañero de recuerdos.</p>
+                <p>Aun no tienes cuenta registrate ahora!</p>
+                <a href="registro" class="ui primary button btn-index-register">Registro</a>
             </div>
             <div class="column-bg">
             </div>

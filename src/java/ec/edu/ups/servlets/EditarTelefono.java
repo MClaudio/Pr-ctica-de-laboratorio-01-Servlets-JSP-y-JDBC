@@ -41,8 +41,7 @@ public class EditarTelefono extends HttpServlet {
         String sesion = request.getParameter("delete");
         String id = request.getParameter("idTelefono");
         if (sesion != null && id != null) {
-            if (sesion.equals("true")) {
-                
+            if (sesion.equals("true")) {  
                 PhoneDAO phoneDao = DAOFactory.getDAOFactory().getPhoneDAO();
                 Phone phone = phoneDao.findById(Integer.parseInt(id));
                 phoneDao.delete(phone);

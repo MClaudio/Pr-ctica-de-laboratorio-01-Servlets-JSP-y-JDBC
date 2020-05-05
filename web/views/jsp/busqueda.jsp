@@ -46,7 +46,6 @@
             </div>
         </div>
 
-        <p>${users}</p>
         <div class="ui container">
             <c:choose>
                 <c:when test="${users.size() > 0}">
@@ -63,43 +62,49 @@
                             <c:forEach var="user" items="${users}">
                                 <c:set var="i" value = "${i+1}"/>
                                 <tr data-toggle="modal" data-target="#exampleModal${i}" data-whatever="@mdo">
-                                        <td>
-                                            <div class="ui middle aligned selection list">
-                                                <div class="item">
-                                                    <img class="ui avatar image" src="public/img/img.png">
-                                                    <div class="content">
-                                                        <div class="header">${user.nombre} ${user.nombre}</div>
-                                                    </div>
+                                    <td>
+                                        <div class="ui middle aligned selection list">
+                                            <div class="item">
+                                                <img class="ui avatar image" src="public/img/img.png">
+                                                <div class="content">
+                                                    <div class="header">${user.nombre} ${user.nombre}</div>
                                                 </div>
+                                            </div>
 
-                                        </td>
-                                        <td>${user.correo}</td>
-                                        <td>${user.telefonos[0].numero}</td>
-                                    </tr>
-                                
-                                <div class="modal fade" id="exampleModal${i}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">${user.nombre} ${user.apellido}</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <h2>Detalles de contacto</h2>
-                                                <c:forEach var="telefono" items="${user.telefonos}">
-                                                    <p>Numero: ${telefono.numero} * ${telefono.tipo} * ${telefono.operadora}</p>
-                                    
-                                                </c:forEach>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            </div>
+                                    </td>
+                                    <td>${user.correo}</td>
+                                    <td>${user.telefonos[0].numero}</td>
+                                </tr>
+
+                            <div class="modal fade" id="exampleModal${i}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title" id="exampleModalLabel">${user.nombre} ${user.apellido}  
+                                                
+                                                <a href="mailto:${user.correo}" class="ui small primary labeled icon button mail-user">
+                                                    <i class="envelope icon"></i> Enviar correo
+                                                </a>
+
+                                            </h3>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h5>Detalles de contacto</h5>
+                                            <c:forEach var="telefono" items="${user.telefonos}">
+                                                <p><i class="phone icon"></i> <a href="tel:${telefono.numero}">${telefono.numero}</a>  &#9679; ${telefono.tipo} &#9679; ${telefono.operadora}</p>
+
+                                            </c:forEach>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                         </div>
                                     </div>
                                 </div>
-                            
+                            </div>
+
                         </c:forEach>
                         </tbody>
                     </table>
