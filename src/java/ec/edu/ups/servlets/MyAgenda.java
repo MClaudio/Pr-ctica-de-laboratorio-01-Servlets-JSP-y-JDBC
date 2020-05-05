@@ -16,14 +16,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author claum
  */
-@WebServlet(name = "Login", urlPatterns = {"/login"})
-public class Login extends HttpServlet {
+@WebServlet(name = "MyAgenda", urlPatterns = {"/my-agenda"})
+public class MyAgenda extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -37,8 +36,26 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/html/form-login.html");
-        dispatcher.forward(request, response);
+
+        String sesion = request.getParameter("logout");
+        if (sesion != null) {
+            if (sesion.equals("true")) {
+                System.out.println("Sesion cerrada de id " + request.getSession().getAttribute("sesionID"));
+                request.getSession().invalidate();
+                response.sendRedirect("/Practica-de-laboratorio-01");
+
+            }
+        } else {
+            UserDAO userDao = DAOFactory.getDAOFactory().getUserDAO();
+            User user = userDao.findById(String.valueOf(request.getSession().getAttribute("userID")));
+
+            request.setAttribute("user", user);
+            getServletContext().getRequestDispatcher("/views/jsp/my-agenda.jsp").forward(request, response);
+            //RequestDispatcher dispatcher = request.getRequestDispatcher("/views/jsp/my-agenda.jsp");
+            //dispatcher.forward(request, response);
+
+            //System.out.println("Nombre: "+user.getNombre() + " Apellido: "+user.getApellido());
+        }
     }
 
     /**
@@ -52,23 +69,7 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String mail = request.getParameter("mail");
-        String pass = request.getParameter("pass");
-        
-        UserDAO userDao = DAOFactory.getDAOFactory().getUserDAO();
-        User user = userDao.findUser(mail, pass);
-        if (user != null && user.getActivo() == 1) {
-            System.out.println("usuario encontrado");
-            HttpSession session = request.getSession(true);
-            System.out.println("Sesion iniciada con id " + request.getSession().getId());
-            session.setAttribute("sesionID", String.valueOf(session.getId()));
-            session.setAttribute("userID", user.getCedula());
-            
-            response.sendRedirect("my-agenda");
-            
-        }else{
-            response.sendRedirect("login");
-        }     
+        //processRequest(request, response);
     }
 
     /**

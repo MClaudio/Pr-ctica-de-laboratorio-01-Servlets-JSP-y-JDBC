@@ -23,8 +23,8 @@ public class Phone implements Serializable{
         
     }
 
-    public Phone(int id, String tipo, String operadora) {
-        this.id = id;
+    public Phone(String numero, String tipo, String operadora) {
+        this.numero = numero;
         this.tipo = tipo;
         this.operadora = operadora;
     }

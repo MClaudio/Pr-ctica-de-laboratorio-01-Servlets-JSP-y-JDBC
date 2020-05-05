@@ -1,9 +1,12 @@
+<%-- 
+    Document   : index
+    Created on : 04-may-2020, 20:44:59
+    Author     : claum
+--%>
+
+<%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
         <title>TODO supply a title</title>
@@ -14,6 +17,7 @@ and open the template in the editor.
         <link rel="stylesheet" href="public/css/styles.css">
     </head>
     <body>
+
         <div class="ui container">
             <div class="ui secondary  menu">
                 <div class="item logo">
@@ -22,11 +26,13 @@ and open the template in the editor.
 
                 <div class="right menu">
                     <div class="item">
-                        <div class="ui left icon action input">
-                            <i class="users icon"></i>
-                            <input type="text" placeholder="Buscar...">
-                            <a href="#" class="ui blue submit button">Buscar</a>
-                        </div>
+                        <form action="busqueda">
+                            <div class="ui left icon action input">
+                                <i class="users icon"></i>
+                                <input type="text" placeholder="Buscar..." name="usuario">
+                                <input type="submit" class="ui blue submit button" value="Buscar">
+                            </div>
+                        </form>
                     </div>
                     <div class="item">
                         <a href="registro" class="ui primary button">Registro</a>

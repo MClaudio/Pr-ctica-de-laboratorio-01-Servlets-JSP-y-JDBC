@@ -6,24 +6,23 @@
 package ec.edu.ups.servlets;
 
 import ec.edu.ups.dao.DAOFactory;
-import ec.edu.ups.dao.UserDAO;
+import ec.edu.ups.dao.PhoneDAO;
+import ec.edu.ups.modelo.Phone;
 import ec.edu.ups.modelo.User;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author claum
  */
-@WebServlet(name = "Login", urlPatterns = {"/login"})
-public class Login extends HttpServlet {
+@WebServlet(name = "AgregarTelefono", urlPatterns = {"/agragar-telefono"})
+public class AgregarTelefono extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -37,8 +36,7 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/html/form-login.html");
-        dispatcher.forward(request, response);
+        //processRequest(request, response);
     }
 
     /**
@@ -52,23 +50,20 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String mail = request.getParameter("mail");
-        String pass = request.getParameter("pass");
-        
-        UserDAO userDao = DAOFactory.getDAOFactory().getUserDAO();
-        User user = userDao.findUser(mail, pass);
-        if (user != null && user.getActivo() == 1) {
-            System.out.println("usuario encontrado");
-            HttpSession session = request.getSession(true);
-            System.out.println("Sesion iniciada con id " + request.getSession().getId());
-            session.setAttribute("sesionID", String.valueOf(session.getId()));
-            session.setAttribute("userID", user.getCedula());
-            
-            response.sendRedirect("my-agenda");
-            
-        }else{
-            response.sendRedirect("login");
-        }     
+        String numero = request.getParameter("numero");
+        String tipo = request.getParameter("tipo");
+        String operadora = request.getParameter("operadora");
+
+        PhoneDAO phoneDao = DAOFactory.getDAOFactory().getPhoneDAO();
+        Phone phone = new Phone(numero, tipo, operadora);
+        User user = DAOFactory.getDAOFactory().getUserDAO().findById(String.valueOf(request.getSession().getAttribute("userID")));
+        phone.setUser(user);
+        phoneDao.create(phone);
+
+        response.sendRedirect("my-agenda");
+
+        //System.out.println("Usuario de telefono : " + user.getCedula());
+
     }
 
     /**

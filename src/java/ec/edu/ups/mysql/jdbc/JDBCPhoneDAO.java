@@ -18,7 +18,7 @@ import java.util.List;
  * @author claum
  */
 public class JDBCPhoneDAO extends JDBCGenericDAO<Phone, Integer> implements PhoneDAO {
-
+    
     @Override
     public void createTable() {
         conexionDos.update("CREATE TABLE IF NOT EXISTS telefono ("
@@ -31,21 +31,22 @@ public class JDBCPhoneDAO extends JDBCGenericDAO<Phone, Integer> implements Phon
                 + "	FOREIGN KEY (usu_cedula) REFERENCES usuario(usu_cedula)"
                 + ");");
     }
-
+    
     @Override
     public boolean create(Phone phone) {
-
-           return conexionDos.update("INSERT INTO telefono (tel_numero, tel_tipo, tel_operadora, usu_cedula) "
-                + "VALUES ('" + phone.getNumero() + "', '" + phone.getTipo() + "', '" + phone.getOperadora() + "', '" + phone.getUser().getCedula() + "');");  
+        
+        return conexionDos.update("INSERT INTO telefono (tel_numero, tel_tipo, tel_operadora, usu_cedula) "
+                + "VALUES ('" + phone.getNumero() + "', '" + phone.getTipo() + "', '" + phone.getOperadora() + "', '" + phone.getUser().getCedula() + "');");        
     }
-
+    
     @Override
     public Phone findById(Integer id) {
         Phone phone = null;
         ResultSet rs = conexionUno.query("Select * FROM telefono WHERE tel_id = " + id + ";");
         try {
             if (rs != null && rs.next()) {
-                phone = new Phone(rs.getInt("tel_id"), rs.getString("tel_tipo"), rs.getString("tel_operadora"));
+                phone = new Phone(rs.getString("tel_numero"), rs.getString("tel_tipo"), rs.getString("tel_operadora"));
+                phone.setId(rs.getInt("tel_id"));
                 phone.setUser(DAOFactory.getDAOFactory().getUserDAO().findById(rs.getString("usu_cedula")));
             }
         } catch (SQLException e) {
@@ -53,34 +54,36 @@ public class JDBCPhoneDAO extends JDBCGenericDAO<Phone, Integer> implements Phon
         }
         return phone;
     }
-
+    
     @Override
     public boolean update(Phone phone) {
-       return conexionDos.update("UPDATE telefono SET "
+        return conexionDos.update("UPDATE telefono SET "
                 + "	tel_numero = '" + phone.getNumero() + "',"
                 + "	tel_tipo = '" + phone.getTipo() + "',"
                 + "	tel_operadora = '" + phone.getOperadora() + "'"
                 + "WHERE tel_id = '" + phone.getId() + "' AND usu_cedula = '" + phone.getUser().getCedula() + "';");
     }
-
+    
     @Override
     public boolean delete(Phone phone) {
-       return conexionDos.update("DELETE FROM telefono WHERE tel_id = '" + phone.getId() + "' AND usu_cedula = '" + phone.getUser().getCedula() + "';");
+        return conexionDos.update("DELETE FROM telefono WHERE tel_id = '" + phone.getId() + "' AND usu_cedula = '" + phone.getUser().getCedula() + "';");
     }
-
+    
     @Override
     public List<Phone> find() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
     public List<Phone> findByUserId(String cedula) {
         List<Phone> phones = new ArrayList<>();
         ResultSet rs = conexionDos.query("SELECT * FROM telefono WHERE usu_cedula = '" + cedula + "';");
         try {
             while (rs.next()) {
-                Phone phone = new Phone(rs.getInt("tel_id"), rs.getString("tel_tipo"), rs.getString("tel_operadora"));
-                phone.setUser(DAOFactory.getDAOFactory().getUserDAO().findById(rs.getString("usu_cedula")));
+                Phone phone = new Phone(rs.getString("tel_numero"), rs.getString("tel_tipo"), rs.getString("tel_operadora"));
+                phone.setId(rs.getInt("tel_id"));
+//phone.setUser(DAOFactory.getDAOFactory().getUserDAO().findById(cedula));
+                //System.out.println("Telegono usuario: "+cedula);
                 phones.add(phone);
             }
         } catch (SQLException e) {
@@ -88,5 +91,4 @@ public class JDBCPhoneDAO extends JDBCGenericDAO<Phone, Integer> implements Phon
         }
         return phones;
     }
-
 }

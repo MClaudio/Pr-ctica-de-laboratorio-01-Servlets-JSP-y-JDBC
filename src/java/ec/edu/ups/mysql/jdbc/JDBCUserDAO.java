@@ -44,9 +44,10 @@ public class JDBCUserDAO extends JDBCGenericDAO<User, String> implements UserDAO
         ResultSet rs = conexionUno.query("SELECT * FROM usuario WHERE usu_cedula = '" + cedula + "';");
         try {
             if (rs != null && rs.next()) {
-                user = new User(rs.getString("usu_cedula"), rs.getString("usu_nombre"), rs.getNString("usu_apellido"), rs.getNString("usu_correo"), rs.getNString("usu_pass "), rs.getInt("usu_activo"));
+                user = new User(rs.getString("usu_cedula"), rs.getString("usu_nombre"), rs.getString("usu_apellido"), rs.getNString("usu_correo"), rs.getNString("usu_pass"), rs.getInt("usu_activo"));
                 List<Phone> phones = DAOFactory.getDAOFactory().getPhoneDAO().findByUserId(user.getCedula());
                 user.setTelefonos(phones);
+                //System.out.println("Usuario buscado...."+user.getNombre());
             }
         } catch (SQLException e) {
             System.out.println(">>>WARNING (JDBCUserDAO:findById): " + e.getMessage());
@@ -65,7 +66,7 @@ public class JDBCUserDAO extends JDBCGenericDAO<User, String> implements UserDAO
 
     @Override
     public boolean delete(User user) {
-      return conexionUno.update("UPDATE usuario SET "
+        return conexionUno.update("UPDATE usuario SET "
                 + "	usu_activo = " + user.getActivo()
                 + "	WHERE usu_cedula = '" + user.getCedula() + "';");
     }
@@ -77,13 +78,48 @@ public class JDBCUserDAO extends JDBCGenericDAO<User, String> implements UserDAO
         ResultSet rs = conexionUno.query("SELECT * FROM usuario;");
         try {
             while (rs.next()) {
-                User user = new User(rs.getString("usu_cedula"), rs.getString("usu_nombre"), rs.getNString("usu_apellido"), rs.getNString("usu_correo"), rs.getNString("usu_pass "), rs.getInt("usu_activo"));
+                User user = new User(rs.getString("usu_cedula"), rs.getString("usu_nombre"), rs.getNString("usu_apellido"), rs.getNString("usu_correo"), rs.getNString("usu_pass"), rs.getInt("usu_activo"));
                 List<Phone> phones = DAOFactory.getDAOFactory().getPhoneDAO().findByUserId(user.getCedula());
                 user.setTelefonos(phones);
                 users.add(user);
             }
         } catch (SQLException e) {
             System.out.println(">>>WARNING (JDBCUserDAO:find): " + e.getMessage());
+        }
+        return users;
+    }
+
+    @Override
+    public User findUser(String correo, String pass) {
+        //System.out.println("Usuario: "+correo+" Pass: "+pass);
+        User user = null;
+        ResultSet rs = conexionUno.query("SELECT * FROM usuario WHERE usu_correo = '" + correo + "' AND usu_pass = '" + pass + "';");
+        try {
+            if (rs != null && rs.next()) {
+                user = new User(rs.getString("usu_cedula"), rs.getString("usu_nombre"), rs.getNString("usu_apellido"), rs.getNString("usu_correo"), rs.getNString("usu_pass"), rs.getInt("usu_activo"));
+                List<Phone> phones = DAOFactory.getDAOFactory().getPhoneDAO().findByUserId(user.getCedula());
+                user.setTelefonos(phones);
+            }
+        } catch (SQLException e) {
+            System.out.println(">>>WARNING (JDBCUserDAO:findUser): " + e.getMessage());
+        }
+        return user;
+    }
+
+    @Override
+    public List<User> findByIdOrMail(String context) {
+        List<User> users = new ArrayList<>();
+        ResultSet rs = conexionUno.query("SELECT * FROM usuario "
+                + "WHERE usu_cedula = '" + context + "' OR usu_correo = '" + context + "';");
+        try {
+            if (rs != null && rs.next()) {
+                User user = new User(rs.getString("usu_cedula"), rs.getString("usu_nombre"), rs.getString("usu_apellido"), rs.getString("usu_correo"), rs.getString("usu_pass"), rs.getInt("usu_activo"));
+                List<Phone> phones = DAOFactory.getDAOFactory().getPhoneDAO().findByUserId(user.getCedula());
+                user.setTelefonos(phones);
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            System.out.println(">>>WARNING (JDBCUserDAO:findByIdOrMail): " + e.getMessage());
         }
         return users;
     }

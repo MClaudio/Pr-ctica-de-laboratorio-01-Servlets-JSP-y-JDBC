@@ -17,16 +17,18 @@ and open the template in the editor.
         <div class="ui container">
             <div class="ui secondary  menu">
                 <div class="item logo">
-                    <a href="/Practica-de-laboratorio-01"><img src="public/img/logo.png" alt=""></a>
+                    <a href="/Practica-de-laboratorio-01"><h2><span>Book</span>Contact</h2></a>
                 </div>
 
                 <div class="right menu">
                     <div class="item">
-                        <div class="ui left icon action input">
-                            <i class="users icon"></i>
-                            <input type="text" placeholder="Buscar...">
-                            <a href="#" class="ui blue submit button">Buscar</a>
-                        </div>
+                        <form action="busqueda">
+                            <div class="ui left icon action input">
+                                <i class="users icon"></i>
+                                <input type="text" placeholder="Buscar..." name="usuario">
+                                <input type="submit" class="ui blue submit button" value="Buscar">
+                            </div>
+                        </form>
                     </div>
                     <div class="item">
                         <a href="registro" class="ui primary button">Registro</a>
@@ -62,7 +64,7 @@ and open the template in the editor.
                             <div class="field">
                                 <label>Cedula</label>
                                 <div class="ui left icon input">
-                                    <input type="text" placeholder="0000000000" name="cedula" required="" maxlength="10" pattern="[0-9]+">
+                                    <input type="text" placeholder="0000000000" name="cedula" required="" maxlength="10" minlength="10" pattern="[0-9]+">
                                     <i class="address card icon"></i>
                                 </div>
                             </div>

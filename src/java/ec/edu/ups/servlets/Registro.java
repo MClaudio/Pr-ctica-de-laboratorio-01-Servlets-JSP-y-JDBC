@@ -9,7 +9,6 @@ import ec.edu.ups.dao.DAOFactory;
 import ec.edu.ups.dao.UserDAO;
 import ec.edu.ups.modelo.User;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -58,15 +57,17 @@ public class Registro extends HttpServlet {
         String pass = request.getParameter("pass");
         int activo = 1;
         
-        System.out.println("Metodo registro");
+        //System.out.println("Metodo registro");
         
         UserDAO userDao = DAOFactory.getDAOFactory().getUserDAO();
         User user = new User(cedula, nombre, apellido, mail, pass, activo);
         if (userDao.create(user)) {
-            System.out.println("Usuario Creado");
-            System.out.println("nombre: "+nombre+" apellido: "+apellido+" cedula: "+cedula+" mail: "+mail+" pass: "+pass);
+            response.sendRedirect("login");
+            //System.out.println("Usuario Creado");
+            //System.out.println("nombre: "+nombre+" apellido: "+apellido+" cedula: "+cedula+" mail: "+mail+" pass: "+pass);
         }else{
             System.out.println("Usuario No Creado");
+            response.sendRedirect("registro");
         }
         
         
