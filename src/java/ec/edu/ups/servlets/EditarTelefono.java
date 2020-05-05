@@ -6,11 +6,11 @@
 package ec.edu.ups.servlets;
 
 import ec.edu.ups.dao.DAOFactory;
-import ec.edu.ups.dao.UserDAO;
+import ec.edu.ups.dao.PhoneDAO;
+import ec.edu.ups.modelo.Phone;
 import ec.edu.ups.modelo.User;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,10 +21,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author claum
  */
-@WebServlet(name = "Buesqueda", urlPatterns = {"/busqueda"})
-public class Buesqueda extends HttpServlet {
+@WebServlet(name = "EditarTelefono", urlPatterns = {"/editar-telefono"})
+public class EditarTelefono extends HttpServlet {
 
-    
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -38,15 +38,18 @@ public class Buesqueda extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String contexto = request.getParameter("usuario");
-        
-        UserDAO userDao = DAOFactory.getDAOFactory().getUserDAO();
-        List<User> users = userDao.findByIdOrMail(contexto);
-        
-        request.setAttribute("users", users);
-        getServletContext().getRequestDispatcher("/views/jsp/busqueda.jsp").forward(request, response);
-        //System.out.println("users: "+users.toString());
+        String sesion = request.getParameter("delete");
+        String id = request.getParameter("idTelefono");
+        if (sesion != null && id != null) {
+            if (sesion.equals("true")) {
+                
+                PhoneDAO phoneDao = DAOFactory.getDAOFactory().getPhoneDAO();
+                Phone phone = phoneDao.findById(Integer.parseInt(id));
+                phoneDao.delete(phone);
+                //System.out.println("telefono a eliminar.. " + id );
+                response.sendRedirect("my-agenda");
+            }
+        } else {}
     }
 
     /**
@@ -60,7 +63,22 @@ public class Buesqueda extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
+        String numero = request.getParameter("numero");
+        String tipo = request.getParameter("tipo");
+        String operadora = request.getParameter("operadora");
+        String idTelefono = request.getParameter("idtel");
+
+        PhoneDAO phoneDao = DAOFactory.getDAOFactory().getPhoneDAO();
+        Phone phone = phoneDao.findById(Integer.parseInt(idTelefono));
+        User user = DAOFactory.getDAOFactory().getUserDAO().findById(String.valueOf(request.getSession().getAttribute("userID")));
+        phone.setUser(user);
+        phone.setNumero(numero);
+        phone.setTipo(tipo);
+        phone.setOperadora(operadora);
+        
+        phoneDao.update(phone);
+
+        response.sendRedirect("my-agenda");
     }
 
     /**

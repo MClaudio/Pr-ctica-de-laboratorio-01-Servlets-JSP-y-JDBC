@@ -35,3 +35,12 @@ body{
     width: 70%;
     margin: 50px auto;
 }
+
+.ui.labeled.icon.button, .ui.labeled.icon.buttons .button{
+    height: 45px;
+}
+
+.ui .content-btns{
+    display: flex;
+    align-items: center;
+}

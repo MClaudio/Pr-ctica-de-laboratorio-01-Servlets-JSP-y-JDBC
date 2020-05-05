@@ -36,72 +36,134 @@
                         </form>
                     </div>
 
-                    <div class="item">
-                        <a href="my-agenda?logout=true" class="ui button">Cerrar Sesion</a> 
+                    <div class="content-btns">
+                        <div class="item">
+                            <a href="my-agenda?logout=true" class="ui button">Cerrar Sesion</a> 
+                        </div>
+                        <button type="button" class="ui primary labeled icon button" data-toggle="modal" data-target="#modalInfo">
+                            <i class="user icon"></i> Editar datos
+                        </button>
                     </div>
+
+
                 </div>
             </div>
         </div>
+        <div class="ui container">
+            <c:choose>
+                <c:when test="${user.telefonos.size() > 0}">
+                    <h1>Mis Telefonos</h1>
 
-        <c:choose>
-            <c:when test="${user.telefonos.size() > 0}">
-                <h1>Mis Telefonos</h1>
-
-                <table class="ui compact celled definition table">
-                    <thead class="full-width">
-                        <tr>
-                            <th>#</th>
-                            <th>Numero</th>
-                            <th>Tipo</th>
-                            <th>Operadora</th>
-                            <th>Opciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <c:set var="i" value = "${0}"/>
-
-                        <c:forEach var="telefono" items="${user.telefonos}">
-                            <c:set var="i" value = "${i+1}"/>
+                    <table class="ui compact celled definition table">
+                        <thead class="full-width">
                             <tr>
-                                <td>${i}</td> 
-                                <td>${telefono.numero}</td>
-                                <td>${telefono.tipo}</td>
-                                <td>${telefono.operadora}</td>
-                                <td>
-
-                                    <div class="ui right floated small red labeled icon button">
-                                        <i class="trash alternate icon"></i> Eliminar
-                                    </div>
-                                    <div class="ui right floated small green labeled icon button">
-                                        <i class="edit icon"></i> Editar
-                                    </div>
-                                </td>
+                                <th>#</th>
+                                <th>Numero</th>
+                                <th>Tipo</th>
+                                <th>Operadora</th>
+                                <th>Opciones</th>
                             </tr>
+                        </thead>
+                        <tbody>
+
+                            <c:set var="i" value = "${0}"/>
+
+                            <c:forEach var="telefono" items="${user.telefonos}">
+                                <c:set var="i" value = "${i+1}"/>
+                                <tr>
+                                    <td>${i}</td> 
+                                    <td>${telefono.numero}</td>
+                                    <td>${telefono.tipo}</td>
+                                    <td>${telefono.operadora}</td>
+                                    <td>
+
+                                        <div class="modal fade" id="confirm-delete${i}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5>Eliminar numero.</h5>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>El numero ${telefono.numero} se eliminara de tu agenda.</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                        <a href="editar-telefono?delete=true&idTelefono=${telefono.id}" class="btn btn-danger btn-ok">Eliminar</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+
+                                        <div class="ui right floated small red labeled icon button" data-toggle="modal" data-target="#confirm-delete${i}" >
+                                            <i class="trash alternate icon"></i> Eliminar
+                                        </div>
+                                        <div class="ui right floated small green labeled icon button" data-toggle="modal" data-target="#exampleModalCenter${i}">
+                                            <i class="edit icon"></i> Editar
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Modal -->
+                            <div class="modal fade" id="exampleModalCenter${i}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalCenterTitle">Numero: ${telefono.numero}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form action="editar-telefono" method="POST">
+                                            <input type="hidden" name="idtel" value="${telefono.id}" >
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="numero">Numero</label>
+                                                    <input type="text" class="form-control" id="numero" name="numero" value="${telefono.numero}" required="" >
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="tipo">Tipo</label>
+                                                        <input type="text" class="form-control" id="tipo" name="tipo" required="" placeholder="Movil" value="${telefono.tipo}">
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="operadora">Operadora</label>
+                                                        <input type="text" class="form-control" id="operadora" name="operadora" required="" placeholder="Movistar" value="${telefono.operadora}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </c:forEach>
 
-                    </tbody>
-                    <tfoot class="full-width">
-                        <tr>
-                            <th></th>
-                            <th colspan="4">
+                        </tbody>
+                        <tfoot class="full-width">
+                            <tr>
+                                <th></th>
+                                <th colspan="4">
 
-                                <button type="button" class="ui right floated small primary labeled icon button" data-toggle="modal" data-target="#exampleModalCenter">
-                                    <i class="phone icon"></i> Agregar telefono
-                                </button>
-                            </th>
-                        </tr>
-                    </tfoot>
-                </table>
+                                    <button type="button" class="ui right floated small primary labeled icon button" data-toggle="modal" data-target="#exampleModalCenter">
+                                        <i class="phone icon"></i> Agregar telefono
+                                    </button>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
 
-            </c:when>    
-            <c:otherwise>
-                <h1>No hay contactos</h1>
-                <button type="button" class="ui left floated small primary labeled icon button" data-toggle="modal" data-target="#exampleModalCenter">
-                    <i class="phone icon"></i> Agregar telefono
-                </button>
-            </c:otherwise>
-        </c:choose>
+                </c:when>    
+                <c:otherwise>
+                    <h1>No hay contactos</h1>
+                    <button type="button" class="ui left floated small primary labeled icon button" data-toggle="modal" data-target="#exampleModalCenter">
+                        <i class="phone icon"></i> Agregar telefono
+                    </button>
+                </c:otherwise>
+            </c:choose>
+        </div>
 
         <!-- Modal -->
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -139,12 +201,6 @@
             </div>
         </div>
 
-
-
-
-        <button type="button" class="ui left floated small primary labeled icon button" data-toggle="modal" data-target="#modalInfo">
-            <i class="user icon"></i> Editar datos
-        </button>
         <!-- Modal -->
         <div class="modal fade" id="modalInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
