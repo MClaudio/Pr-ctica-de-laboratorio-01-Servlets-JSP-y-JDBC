@@ -48,7 +48,7 @@ public class EditarTelefono extends HttpServlet {
                 //System.out.println("telefono a eliminar.. " + id );
                 response.sendRedirect("my-agenda");
             }
-        } else {}
+        }
     }
 
     /**

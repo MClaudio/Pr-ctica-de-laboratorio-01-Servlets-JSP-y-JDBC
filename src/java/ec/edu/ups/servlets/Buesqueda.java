@@ -43,6 +43,7 @@ public class Buesqueda extends HttpServlet {
         
         UserDAO userDao = DAOFactory.getDAOFactory().getUserDAO();
         List<User> users = userDao.findByIdOrMail(contexto);
+        //System.out.println("Usuarios "+users.toString());
         
         request.setAttribute("users", users);
         getServletContext().getRequestDispatcher("/views/jsp/busqueda.jsp").forward(request, response);

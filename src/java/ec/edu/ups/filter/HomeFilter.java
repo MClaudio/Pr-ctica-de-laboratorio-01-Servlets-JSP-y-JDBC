@@ -58,8 +58,18 @@ public class HomeFilter implements Filter {
         userDao.createTable();
         PhoneDAO phoneDao = DAOFactory.getDAOFactory().getPhoneDAO();
         phoneDao.createTable();
+        System.err.println("Filtro en homefilter");
+        //chain.doFilter(request, response);
+        HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        res.sendRedirect("/Practica-de-laboratorio-01");
+        //res.sendRedirect("/Practica-de-laboratorio-01");
+        
+        //req.setAttribute("userId", req.getSession().getAttribute("userID"));
+        //RequestDispatcher dispatcher = req.getRequestDispatcher("/index.js");
+        //dispatcher.forward(req, res);
+        //RequestDispatcher despachador= request.getRequestDispatcher("/scopes.jsp");
+        //despachador.forward(request, response);
+        
     
         
     }
