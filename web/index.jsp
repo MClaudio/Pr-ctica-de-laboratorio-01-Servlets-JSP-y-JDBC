@@ -25,7 +25,7 @@
         <div class="ui container">
             <div class="ui secondary  menu">
                 <div class="item logo">
-                    <a href="/Practica-de-laboratorio-01"><h2>Book<span>Contacts</span></h2></a>
+                    <a href="/Practica-de-laboratorio-01"><h2>Book<span>Contact</span></h2></a>
                 </div>
 
                 <div class="right menu">
