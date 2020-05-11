@@ -6,11 +6,13 @@
 package ec.edu.ups.servlets;
 
 import ec.edu.ups.dao.DAOFactory;
+import ec.edu.ups.dao.PhoneDAO;
 import ec.edu.ups.dao.UserDAO;
 import ec.edu.ups.modelo.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,6 +40,8 @@ public class MyAgenda extends HttpServlet {
             throws ServletException, IOException {
 
         String sesion = request.getParameter("logout");
+        String telefono = request.getParameter("mi-telefono");
+
         if (sesion != null) {
             if (sesion.equals("true")) {
                 //System.out.println("Sesion cerrada de id " + request.getSession().getAttribute("sesionID"));
@@ -46,9 +50,17 @@ public class MyAgenda extends HttpServlet {
 
             }
         } else {
+            ServletContext aplicacion = request.getServletContext();
             UserDAO userDao = DAOFactory.getDAOFactory().getUserDAO();
             User user = userDao.findById(String.valueOf(request.getSession().getAttribute("userID")));
-
+            if (telefono != null) {
+                aplicacion.setAttribute("search", "true");
+                //request.setAttribute("search", "true");
+                PhoneDAO phoneDao = DAOFactory.getDAOFactory().getPhoneDAO();
+                user.setTelefonos(phoneDao.findByNumber(telefono, user.getCedula()));
+            }else{
+                aplicacion.setAttribute("search", "false");
+            }
             request.setAttribute("user", user);
             getServletContext().getRequestDispatcher("/views/jsp/my-agenda.jsp").forward(request, response);
             //RequestDispatcher dispatcher = request.getRequestDispatcher("/views/jsp/my-agenda.jsp");

@@ -14,4 +14,5 @@ import java.util.List;
  */
 public interface PhoneDAO extends GenericDAO<Phone, Integer>{
     public abstract List<Phone> findByUserId(String cedula);
+    public abstract List<Phone> findByNumber(String numero, String cedula);
 }

@@ -26,7 +26,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author claum
  */
-@WebFilter({"/my-agenda", "/agragar-telefono"})
+@WebFilter({"/my-agenda", "/agragar-telefono", "/editar-telefono"})
 public class FilterMyAgenda implements Filter {
 
     private static final boolean debug = true;

@@ -19,6 +19,7 @@
     </head>
     <body>
         <c:set var = "user" value = "${requestScope['user']}" />
+        <c:set var = "search" value = "${applicationScope['search']}" />
         <div class="ui container">
             <div class="ui secondary  menu">
                 <div class="item logo">
@@ -44,8 +45,6 @@
                             <i class="user icon"></i> Editar datos
                         </button>
                     </div>
-
-
                 </div>
             </div>
         </div>
@@ -56,6 +55,11 @@
                 <c:choose>
                     <c:when test="${user.telefonos.size() > 0}">
                         <h1>Mis Telefonos</h1>
+
+                        <form class="form-inline my-2 my-lg-0">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Buscar en mi agenda" aria-label="Search" required="" name="mi-telefono">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar mi telefono</button>
+                        </form>
 
                         <table class="ui compact celled definition table">
                             <thead class="full-width">
@@ -146,23 +150,44 @@
                             </tbody>
                             <tfoot class="full-width">
                                 <tr>
-                                    <th></th>
+                                    <c:choose>
+                                        <c:when test="${search == 'true'}">
+                                            <th colspan="2">
+                                                <a href="my-agenda" class="ui right floated small primary labeled icon button mt-3"><i class="arrow alternate circle left outline icon"></i> Regresar </a>
+                                            </th>
+                                        </c:when>   
+                                        <c:otherwise>
+                                            <th></th>
+                                        </c:otherwise>
+                                    </c:choose>
                                     <th colspan="4">
-
                                         <button type="button" class="ui right floated small primary labeled icon button" data-toggle="modal" data-target="#exampleModalCenter">
                                             <i class="phone icon"></i> Agregar telefono
                                         </button>
                                     </th>
+
                                 </tr>
                             </tfoot>
                         </table>
 
                     </c:when>    
                     <c:otherwise>
-                        <h2>No hay contactos aún agrega tu primer número.</h2>
-                        <button type="button" class="ui left floated small primary labeled icon button mt-3" data-toggle="modal" data-target="#exampleModalCenter">
-                            <i class="phone icon"></i> Agregar telefono
-                        </button>
+
+
+                        <c:choose>
+                            <c:when test="${search == null}">
+                                <h2>No hay contactos aún agrega tu primer número.</h2>
+                                <button type="button" class="ui left floated small primary labeled icon button mt-3" data-toggle="modal" data-target="#exampleModalCenter">
+                                    <i class="phone icon"></i> Agregar telefono
+                                </button>
+                            </c:when>    
+                            <c:otherwise>
+                                <h2>No hay resultados.</h2>
+                                <a href="my-agenda" class="ui left floated small primary labeled icon button mt-3"><i class="arrow alternate circle left outline icon"></i> Regresar </a>
+                            </c:otherwise>
+                        </c:choose>
+
+
                     </c:otherwise>
                 </c:choose>
             </div>

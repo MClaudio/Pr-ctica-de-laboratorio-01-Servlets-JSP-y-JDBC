@@ -91,4 +91,22 @@ public class JDBCPhoneDAO extends JDBCGenericDAO<Phone, Integer> implements Phon
         }
         return phones;
     }
+
+    @Override
+    public List<Phone> findByNumber(String numero, String cedula) {
+        List<Phone> phones = new ArrayList<>();
+        ResultSet rs = conexionDos.query("SELECT * FROM telefono WHERE tel_numero = '" + numero + "' AND usu_cedula = '" + cedula + "';");
+        try {
+            while (rs.next()) {
+                Phone phone = new Phone(rs.getString("tel_numero"), rs.getString("tel_tipo"), rs.getString("tel_operadora"));
+                phone.setId(rs.getInt("tel_id"));
+                //phone.setUser(DAOFactory.getDAOFactory().getUserDAO().findById(cedula));
+                //System.out.println("Telegono usuario: "+cedula);
+                phones.add(phone);
+            }
+        } catch (SQLException e) {
+            System.out.println(">>>WARNING (JDBCPhoneDAO:findByShoppingBasketId): " + e.getMessage());
+        }
+        return phones;
+    }
 }
